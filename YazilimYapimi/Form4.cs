@@ -45,7 +45,7 @@ namespace YazilimYapimi
                 mail.Body = "Şifrenizi sıfırlamak için aşağıdaki kodu kullanınız: " + sifreKodu.ToString();
 
                 SmtpServer.Port = 587;
-                SmtpServer.Credentials = new NetworkCredential("erennn971@gmail.com", "lvbo ndmr mbgv vbqu");
+                SmtpServer.Credentials = new NetworkCredential("erennn971@gmail.com");
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
