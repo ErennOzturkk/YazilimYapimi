@@ -59,7 +59,7 @@ namespace YazilimYapimi
                     }
                     else
                     {
-                        MessageBox.Show("No word updated");
+                        MessageBox.Show("No word");
                     }
                 }
             }
