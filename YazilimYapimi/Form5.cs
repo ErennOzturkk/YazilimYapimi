@@ -50,8 +50,8 @@ namespace YazilimYapimi
                         else
                         {
                             MessageBox.Show("Şifre güncellenemedi. Lütfen tekrar deneyin.");
-                        }
-                    }
+    }
+}
                     catch (Exception ex)
                     {
                         MessageBox.Show("Hata: " + ex.Message);

@@ -30,7 +30,6 @@ namespace YazilimYapimi
 
         private void button1_Click(object sender, EventArgs e)
         {
-            mailAdresi = textBox1.Text;
 
             try
             {
@@ -42,11 +41,9 @@ namespace YazilimYapimi
                 mail.Subject = "Şifre Sıfırlama Kodu";
                 Random rnd = new Random();
                 sifreKodu = rnd.Next(100000, 999999);
-                temp = sifreKodu.ToString();
                 mail.Body = "Şifrenizi sıfırlamak için aşağıdaki kodu kullanınız: " + sifreKodu.ToString();
 
                 SmtpServer.Port = 587;
-                SmtpServer.Credentials = new NetworkCredential("erennn971@gmail.com", "fmsd adsq knfh ytjk");
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
@@ -64,10 +61,8 @@ namespace YazilimYapimi
         {
             String girilenKod = textBox2.Text;
 
-            if (girilenKod == temp)
             {
                 MessageBox.Show("Doğrulama başarılı! Şifrenizi sıfırlayabilirsiniz.");
-                
                 Form5 form5 = new Form5();
                 form5.MailAdresi = mailAdresi;
                 form5.Show();

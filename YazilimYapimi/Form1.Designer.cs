@@ -117,7 +117,6 @@
             button1.FlatAppearance.BorderSize = 0;
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Swis721 Blk BT", 15F);
-            button1.Location = new Point(583, 368);
             button1.Name = "button1";
             button1.Size = new Size(286, 32);
             button1.TabIndex = 7;
