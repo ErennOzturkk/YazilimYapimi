@@ -100,7 +100,7 @@
             // 
             textBox2.BackColor = Color.White;
             textBox2.Cursor = Cursors.IBeam;
-            textBox2.Font = new Font("Swis721 Blk BT", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox2.Font = new Font("Swis721 Blk BT", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox2.ForeColor = Color.Black;
             textBox2.Location = new Point(583, 314);
             textBox2.Multiline = true;
@@ -117,6 +117,7 @@
             button1.FlatAppearance.BorderSize = 0;
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Swis721 Blk BT", 15F);
+            button1.Location = new Point(584, 367);
             button1.Name = "button1";
             button1.Size = new Size(286, 32);
             button1.TabIndex = 7;
@@ -142,7 +143,7 @@
             // 
             textBox1.BackColor = Color.White;
             textBox1.Cursor = Cursors.IBeam;
-            textBox1.Font = new Font("Swis721 Blk BT", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox1.Font = new Font("Swis721 Blk BT", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox1.ForeColor = Color.Black;
             textBox1.Location = new Point(584, 250);
             textBox1.Multiline = true;

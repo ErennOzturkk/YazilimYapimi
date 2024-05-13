@@ -22,7 +22,7 @@ namespace YazilimYapimi
 
         }
 
-   
+
 
         private void button5_Click(object sender, EventArgs e)
         {
@@ -42,6 +42,13 @@ namespace YazilimYapimi
         private void button3_Click_1(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Form6 form6 = new Form6();
+            form6.Show();
+            this.Hide();
         }
     }
 }

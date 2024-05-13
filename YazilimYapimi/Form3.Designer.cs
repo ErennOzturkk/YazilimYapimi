@@ -77,7 +77,7 @@
             button2.FlatAppearance.BorderSize = 3;
             button2.FlatStyle = FlatStyle.Flat;
             button2.Font = new Font("Swis721 Blk BT", 15F);
-            button2.Location = new Point(754, 260);
+            button2.Location = new Point(785, 260);
             button2.Name = "button2";
             button2.Size = new Size(326, 40);
             button2.TabIndex = 9;
@@ -96,6 +96,7 @@
             button4.TabIndex = 11;
             button4.Text = "Kelime Ekle ";
             button4.UseVisualStyleBackColor = false;
+            button4.Click += button4_Click;
             // 
             // button5
             // 
@@ -103,7 +104,7 @@
             button5.FlatAppearance.BorderSize = 3;
             button5.FlatStyle = FlatStyle.Flat;
             button5.Font = new Font("Swis721 Blk BT", 15F);
-            button5.Location = new Point(754, 348);
+            button5.Location = new Point(785, 348);
             button5.Name = "button5";
             button5.Size = new Size(326, 40);
             button5.TabIndex = 12;

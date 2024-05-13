@@ -1,5 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
+
+using Microsoft.Data.SqlClient;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,20 +14,30 @@ namespace YazilimYapimi
 {
     public partial class Form5 : Form
     {
-       
-        
+
+
         public String MailAdresi
         {
-            get;set;
+            get; set;
         }
+
+
         public Form5()
         {
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+
+
+
+        private void pictureBox4_Click(object sender, EventArgs e)
         {
-            string yeniSifre =textBox1.Text;
+
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            string yeniSifre = textBox1.Text;
             string connectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
             string query = "UPDATE UserInterface SET Password = @yeniSifre WHERE Mail = @MailAdresi";
 
@@ -35,7 +46,7 @@ namespace YazilimYapimi
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@yeniSifre", yeniSifre);
-                    command.Parameters.AddWithValue("@MailAdresi",MailAdresi);
+                    command.Parameters.AddWithValue("@MailAdresi", MailAdresi);
                     try
                     {
                         connection.Open();
@@ -50,8 +61,8 @@ namespace YazilimYapimi
                         else
                         {
                             MessageBox.Show("Şifre güncellenemedi. Lütfen tekrar deneyin.");
-    }
-}
+                        }
+                    }
                     catch (Exception ex)
                     {
                         MessageBox.Show("Hata: " + ex.Message);
@@ -61,6 +72,6 @@ namespace YazilimYapimi
         }
     }
 
-        
- }
 
+}
+ 
