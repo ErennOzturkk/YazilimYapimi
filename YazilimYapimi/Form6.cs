@@ -38,18 +38,20 @@ namespace YazilimYapimi
         {
             string Turkish = textBox1.Text;
             string English = textBox2.Text;
+            string Pathway = textBox3.Text;
             string ConnectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
 
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 con.Open();
 
-                string Query = "INSERT INTO Words (English, Turkish, Pathway) VALUES (@English, @Turkish, 0)";
+                string Query = "INSERT INTO Words (English, Turkish, Pathway) VALUES (@English, @Turkish,@Pathway)";
 
                 using (SqlCommand cmd = new SqlCommand(Query, con))
                 {
                     cmd.Parameters.AddWithValue("@English", English);
                     cmd.Parameters.AddWithValue("@Turkish", Turkish);
+                    cmd.Parameters.AddWithValue("@Pathway", Pathway);
 
                     int rowsAffected = cmd.ExecuteNonQuery();
 
@@ -59,7 +61,7 @@ namespace YazilimYapimi
                     }
                     else
                     {
-                        MessageBox.Show("No word");
+                        MessageBox.Show("No word updated");
                     }
                 }
             }
