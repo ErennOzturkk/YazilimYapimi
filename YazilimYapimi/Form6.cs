@@ -39,32 +39,35 @@ namespace YazilimYapimi
             string Turkish = textBox1.Text;
             string English = textBox2.Text;
             string Pathway = textBox3.Text;
+            DateTime currentDate = DateTime.Now;
             string ConnectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
 
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 con.Open();
 
-                string Query = "INSERT INTO Words (English, Turkish, Pathway) VALUES (@English, @Turkish,@Pathway)";
+                string Query = "INSERT INTO Words (English, Turkish, Pathway, Date) VALUES (@English, @Turkish, @Pathway, @Date)";
 
                 using (SqlCommand cmd = new SqlCommand(Query, con))
                 {
                     cmd.Parameters.AddWithValue("@English", English);
                     cmd.Parameters.AddWithValue("@Turkish", Turkish);
                     cmd.Parameters.AddWithValue("@Pathway", Pathway);
+                    cmd.Parameters.AddWithValue("@Date", currentDate);
 
                     int rowsAffected = cmd.ExecuteNonQuery();
 
                     if (rowsAffected > 0)
                     {
-                        MessageBox.Show("Word updated");
+                        MessageBox.Show("Word added");
                     }
                     else
                     {
-                        MessageBox.Show("No word updated");
+                        MessageBox.Show("No word added");
                     }
                 }
             }
         }
     }
 }
+
