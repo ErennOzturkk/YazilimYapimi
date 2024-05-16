@@ -58,7 +58,7 @@
             textBox1.Cursor = Cursors.IBeam;
             textBox1.Font = new Font("Swis721 Blk BT", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox1.ForeColor = Color.Black;
-            textBox1.Location = new Point(564, 247);
+            textBox1.Location = new Point(564, 283);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(286, 32);
@@ -72,7 +72,7 @@
             pictureBox5.BorderStyle = BorderStyle.FixedSingle;
             pictureBox5.Image = (Image)resources.GetObject("pictureBox5.Image");
             pictureBox5.InitialImage = null;
-            pictureBox5.Location = new Point(520, 247);
+            pictureBox5.Location = new Point(520, 283);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new Size(38, 32);
             pictureBox5.SizeMode = PictureBoxSizeMode.Zoom;
@@ -86,7 +86,7 @@
             textBox2.Cursor = Cursors.IBeam;
             textBox2.Font = new Font("Swis721 Blk BT", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox2.ForeColor = Color.Black;
-            textBox2.Location = new Point(564, 349);
+            textBox2.Location = new Point(564, 359);
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(286, 32);
@@ -99,7 +99,7 @@
             pictureBox4.BorderStyle = BorderStyle.FixedSingle;
             pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
             pictureBox4.InitialImage = null;
-            pictureBox4.Location = new Point(520, 349);
+            pictureBox4.Location = new Point(520, 359);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(38, 32);
             pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
@@ -114,7 +114,7 @@
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Swis721 Blk BT", 15F);
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(564, 299);
+            button1.Location = new Point(564, 321);
             button1.Name = "button1";
             button1.Size = new Size(286, 32);
             button1.TabIndex = 22;

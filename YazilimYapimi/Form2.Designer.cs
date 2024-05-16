@@ -70,7 +70,7 @@
             textBox2.Cursor = Cursors.IBeam;
             textBox2.Font = new Font("Swis721 Blk BT", 21.75F);
             textBox2.ForeColor = SystemColors.Menu;
-            textBox2.Location = new Point(577, 289);
+            textBox2.Location = new Point(577, 303);
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(286, 32);
@@ -83,7 +83,7 @@
             textBox1.Cursor = Cursors.IBeam;
             textBox1.Font = new Font("Swis721 Blk BT", 21.75F);
             textBox1.ForeColor = SystemColors.Menu;
-            textBox1.Location = new Point(577, 237);
+            textBox1.Location = new Point(577, 265);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(286, 32);
@@ -97,7 +97,7 @@
             pictureBox4.BorderStyle = BorderStyle.FixedSingle;
             pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
             pictureBox4.InitialImage = null;
-            pictureBox4.Location = new Point(533, 289);
+            pictureBox4.Location = new Point(533, 303);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(38, 32);
             pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
@@ -114,7 +114,7 @@
             pictureBox3.ErrorImage = null;
             pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
             pictureBox3.InitialImage = (Image)resources.GetObject("pictureBox3.InitialImage");
-            pictureBox3.Location = new Point(533, 237);
+            pictureBox3.Location = new Point(533, 265);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(38, 32);
             pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;

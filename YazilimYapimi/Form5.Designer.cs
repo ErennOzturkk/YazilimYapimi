@@ -53,7 +53,7 @@
             button2.BackColor = Color.Red;
             button2.FlatStyle = FlatStyle.Flat;
             button2.Font = new Font("Swis721 Blk BT", 15F);
-            button2.Location = new Point(626, 293);
+            button2.Location = new Point(626, 274);
             button2.Name = "button2";
             button2.Size = new Size(286, 32);
             button2.TabIndex = 0;
