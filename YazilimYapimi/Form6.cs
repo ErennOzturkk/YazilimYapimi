@@ -39,7 +39,7 @@ namespace YazilimYapimi
             string Turkish = textBox1.Text;
             string English = textBox2.Text;
             string Pathway = textBox3.Text;
-            DateTime currentDate = DateTime.Now;
+            DateTime WordDate = DateTime.Now;
             string Sentence = textBox4.Text;
             string ConnectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
 
@@ -47,14 +47,14 @@ namespace YazilimYapimi
             {
                 con.Open();
 
-                string Query = "INSERT INTO Words (English, Turkish, Pathway, Date, Sentence) VALUES (@English, @Turkish, @Pathway, @Date,@Sentence)";
+                string Query = "INSERT INTO Words (English, Turkish, Pathway, WordDate, Sentence) VALUES (@English, @Turkish, @Pathway, @WordDate,@Sentence)";
 
                 using (SqlCommand cmd = new SqlCommand(Query, con))
                 {
                     cmd.Parameters.AddWithValue("@English", English);
                     cmd.Parameters.AddWithValue("@Turkish", Turkish);
                     cmd.Parameters.AddWithValue("@Pathway", Pathway);
-                    cmd.Parameters.AddWithValue("@Date", currentDate);
+                    cmd.Parameters.AddWithValue("@WordDate", WordDate);
                     cmd.Parameters.AddWithValue("@Sentence", Sentence);
 
                     int rowsAffected = cmd.ExecuteNonQuery();
