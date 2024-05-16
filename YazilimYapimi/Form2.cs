@@ -45,7 +45,7 @@ namespace YazilimYapimi
             string Username = textBox1.Text;
             string Password = textBox2.Text;
             string Mail = textBox3.Text;
-            string Query = "INSERT INTO UserInterface(Username,Password,Mail) VALUES( '" +Username+ "', '" +Password+ "','"+Mail+"')";
+            string Query = "INSERT INTO UserInterface(Username,Password,Mail) VALUES( '" + Username + "', '" + Password + "','" + Mail + "')";
             SqlCommand cmd = new SqlCommand(Query, con);
             cmd.ExecuteNonQuery();
             con.Close();
@@ -53,6 +53,13 @@ namespace YazilimYapimi
             this.Hide();
             Form1 form1 = new Form1();
             form1.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Hide();
         }
     }
 }

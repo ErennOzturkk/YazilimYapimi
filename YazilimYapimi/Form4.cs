@@ -31,7 +31,7 @@ namespace YazilimYapimi
 
         }
 
- 
+
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
@@ -60,8 +60,8 @@ namespace YazilimYapimi
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mail);
             MessageBox.Show("Şifre sıfırlama kodu mail adresinize gönderilmiştir. Kodunuz: " + sifreKodu.ToString());
-            
-            
+
+
         }
 
         private void button2_Click_1(object sender, EventArgs e)
@@ -69,7 +69,7 @@ namespace YazilimYapimi
             String girilenKod = textBox2.Text;
 
 
-            if (girilenKod ==temp)
+            if (girilenKod == temp)
             {
                 MessageBox.Show("Doğrulama başarılı! Şifrenizi sıfırlayabilirsiniz.");
 
@@ -84,6 +84,18 @@ namespace YazilimYapimi
                 MessageBox.Show("Girilen kod yanlış. Lütfen tekrar deneyin.");
             }
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Hide();
         }
     }
 }

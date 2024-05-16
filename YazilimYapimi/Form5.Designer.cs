@@ -33,6 +33,8 @@
             button2 = new Button();
             pictureBox5 = new PictureBox();
             textBox1 = new TextBox();
+            button1 = new Button();
+            button3 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             SuspendLayout();
@@ -86,11 +88,41 @@
             textBox1.Size = new Size(286, 32);
             textBox1.TabIndex = 21;
             // 
+            // button1
+            // 
+            button1.BackColor = Color.FromArgb(75, 201, 249);
+            button1.BackgroundImage = (Image)resources.GetObject("button1.BackgroundImage");
+            button1.BackgroundImageLayout = ImageLayout.Zoom;
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Location = new Point(1352, 12);
+            button1.Name = "button1";
+            button1.Size = new Size(35, 28);
+            button1.TabIndex = 22;
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
+            // button3
+            // 
+            button3.BackColor = Color.FromArgb(75, 201, 249);
+            button3.BackgroundImage = (Image)resources.GetObject("button3.BackgroundImage");
+            button3.BackgroundImageLayout = ImageLayout.Zoom;
+            button3.FlatAppearance.BorderSize = 0;
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Location = new Point(1393, 12);
+            button3.Name = "button3";
+            button3.Size = new Size(35, 28);
+            button3.TabIndex = 23;
+            button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
+            // 
             // Form5
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1440, 810);
+            Controls.Add(button3);
+            Controls.Add(button1);
             Controls.Add(textBox1);
             Controls.Add(pictureBox5);
             Controls.Add(button2);
@@ -110,5 +142,7 @@
         private Button button2;
         private PictureBox pictureBox5;
         private TextBox textBox1;
+        private Button button1;
+        private Button button3;
     }
 }

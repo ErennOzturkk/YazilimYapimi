@@ -39,6 +39,8 @@
             textBox3 = new TextBox();
             pictureBox5 = new PictureBox();
             textBox4 = new TextBox();
+            button3 = new Button();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -48,6 +50,7 @@
             // 
             // pictureBox1
             // 
+            pictureBox1.BackColor = Color.FromArgb(75, 201, 249);
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(0, -1);
             pictureBox1.Name = "pictureBox1";
@@ -150,11 +153,41 @@
             textBox4.Size = new Size(286, 32);
             textBox4.TabIndex = 9;
             // 
+            // button3
+            // 
+            button3.BackColor = Color.FromArgb(75, 201, 249);
+            button3.BackgroundImage = (Image)resources.GetObject("button3.BackgroundImage");
+            button3.BackgroundImageLayout = ImageLayout.Zoom;
+            button3.FlatAppearance.BorderSize = 0;
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Location = new Point(1393, 12);
+            button3.Name = "button3";
+            button3.Size = new Size(35, 28);
+            button3.TabIndex = 11;
+            button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.FromArgb(75, 201, 249);
+            button2.BackgroundImage = (Image)resources.GetObject("button2.BackgroundImage");
+            button2.BackgroundImageLayout = ImageLayout.Zoom;
+            button2.FlatAppearance.BorderSize = 0;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Location = new Point(1352, 12);
+            button2.Name = "button2";
+            button2.Size = new Size(35, 28);
+            button2.TabIndex = 12;
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
             // Form6
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1440, 810);
+            Controls.Add(button2);
+            Controls.Add(button3);
             Controls.Add(textBox4);
             Controls.Add(pictureBox5);
             Controls.Add(textBox3);
@@ -189,5 +222,7 @@
         private TextBox textBox3;
         private PictureBox pictureBox5;
         private TextBox textBox4;
+        private Button button3;
+        private Button button2;
     }
 }
