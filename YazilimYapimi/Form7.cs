@@ -1,12 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace YazilimYapimi
@@ -14,16 +10,17 @@ namespace YazilimYapimi
     public partial class Form7 : Form
     {
         private string correctEnglishWord;
-        public Form7()
+        private int loggedInUserId = 0;
+        public Form7(int userId)
         {
             InitializeComponent();
+            loggedInUserId = userId;
         }
+
         private void NewQuestion()
         {
             string connectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
-
-
-            string query1 = "SELECT TOP 1 Turkish, English FROM Words ORDER BY NEWID()";
+            string query1 = "SELECT TOP 1 Turkish, English FROM Words WHERE UserID = @UserID ORDER BY NEWID()";
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -34,16 +31,15 @@ namespace YazilimYapimi
                     string turkishWord = "";
                     correctEnglishWord = "";
 
-
                     using (SqlCommand cmd = new SqlCommand(query1, con))
                     {
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
                             {
                                 turkishWord = reader["Turkish"].ToString();
                                 correctEnglishWord = reader["English"].ToString();
-                                textBox1.Text = turkishWord;
                                 textBox1.Text = $"{turkishWord} kelimesinin anlamı nedir?";
                             }
                             else
@@ -54,13 +50,14 @@ namespace YazilimYapimi
                         }
                     }
 
-                    string query2 = "SELECT TOP 3 English FROM Words WHERE Turkish != @Turkish ORDER BY NEWID()";
+                    string query2 = "SELECT TOP 3 English FROM Words WHERE Turkish != @Turkish AND UserID = @UserID ORDER BY NEWID()";
 
                     List<string> englishWords = new List<string>();
 
                     using (SqlCommand cmd = new SqlCommand(query2, con))
                     {
                         cmd.Parameters.AddWithValue("@Turkish", turkishWord);
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -71,27 +68,24 @@ namespace YazilimYapimi
                         }
                     }
 
+                    Random rnd = new Random();
+                    int correctIndex = rnd.Next(4);
+                    englishWords.Insert(correctIndex, correctEnglishWord);
+                    radioButton1.Text = englishWords[0];
+                    radioButton1.Tag = (englishWords[0] == correctEnglishWord);
 
-                    englishWords.Add(correctEnglishWord);
+                    radioButton2.Text = englishWords[1];
+                    radioButton2.Tag = (englishWords[1] == correctEnglishWord);
 
+                    radioButton3.Text = englishWords[2];
+                    radioButton3.Tag = (englishWords[2] == correctEnglishWord);
 
-                    var rnd = new Random();
-                    englishWords = englishWords.OrderBy(x => rnd.Next()).ToList();
-
-
-                    textBox2.Text = englishWords[0];
-                    textBox3.Text = englishWords[1];
-                    textBox4.Text = englishWords[2];
-                    textBox5.Text = englishWords[3];
-
-                    radioButton1.Tag = englishWords[0] == correctEnglishWord;
-                    radioButton2.Tag = englishWords[1] == correctEnglishWord;
-                    radioButton3.Tag = englishWords[2] == correctEnglishWord;
-                    radioButton4.Tag = englishWords[3] == correctEnglishWord;
+                    radioButton4.Text = englishWords[3];
+                    radioButton4.Tag = (englishWords[3] == correctEnglishWord);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Veritabanına bağlanırken bir hata oluştu: " + ex.Message);
+                    MessageBox.Show("Error: " + ex.Message);
                 }
             }
         }
@@ -103,7 +97,7 @@ namespace YazilimYapimi
 
         private void Form7_Load(object sender, EventArgs e)
         {
-        NewQuestion();
+            NewQuestion();
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
@@ -133,14 +127,13 @@ namespace YazilimYapimi
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Form3 form3 = new Form3();
+            Form3 form3 = new Form3(loggedInUserId);
             form3.Show();
             this.Hide();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             bool isCorrect = false;
             if (radioButton1.Checked && (bool)radioButton1.Tag)
                 isCorrect = true;
@@ -151,29 +144,70 @@ namespace YazilimYapimi
             else if (radioButton4.Checked && (bool)radioButton4.Tag)
                 isCorrect = true;
 
-            if (isCorrect)
-            {
-                DateTime WordDate = DateTime.Now;
-                MessageBox.Show("Doğru cevap!");
-                string connectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
+            DateTime WordDate = DateTime.Now;
+            string connectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
 
-                using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                if (isCorrect)
                 {
-                    con.Open();
-                    string query = "UPDATE Words SET WordDate = @WordDate WHERE English = @English";
-                    string query2 = "SELECT WordDate FROM Words WHERE English = @English";
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    MessageBox.Show("Doğru cevap!");
+
+                    // WordDate güncelleme ve WordCounter artırma
+                    string updateWordDateQuery = "UPDATE Words SET WordDate = @WordDate WHERE English = @English AND UserID = @UserID";
+                    string incrementCounterQuery = "UPDATE KnowingCounter SET WordCounter = WordCounter + 1 WHERE WordID = (SELECT WordID FROM Words WHERE English = @English AND UserID = @UserID)";
+
+                    using (SqlCommand cmd = new SqlCommand(updateWordDateQuery, con))
                     {
                         cmd.Parameters.AddWithValue("@WordDate", WordDate);
                         cmd.Parameters.AddWithValue("@English", correctEnglishWord);
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
                         cmd.ExecuteNonQuery();
+                    }
+
+                    using (SqlCommand cmd = new SqlCommand(incrementCounterQuery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@English", correctEnglishWord);
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("WordCounter updated successfully.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to update WordCounter.");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Yanlış cevap. Tekrar deneyin.");
+
+                    // WordCounter sıfırlama
+                    string resetCounterQuery = "UPDATE KnowingCounter SET WordCounter = 0 WHERE WordID = (SELECT WordID FROM Words WHERE English = @English AND UserID = @UserID)";
+
+                    using (SqlCommand cmd = new SqlCommand(resetCounterQuery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@English", correctEnglishWord);
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("WordCounter reset successfully.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to reset WordCounter.");
+                        }
                     }
                 }
             }
 
-            else
-                MessageBox.Show("Yanlış cevap. Tekrar deneyin.");
             NewQuestion();
         }
     }
 }
+

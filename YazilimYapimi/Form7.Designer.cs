@@ -58,7 +58,7 @@
             // 
             textBox1.BackColor = Color.FromArgb(52, 52, 50);
             textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Font = new Font("Swis721 Blk BT", 15F);
+            textBox1.Font = new Font("Swis721 Blk BT", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox1.ForeColor = Color.White;
             textBox1.Location = new Point(480, 215);
             textBox1.Multiline = true;
@@ -72,7 +72,7 @@
             // 
             textBox2.BackColor = Color.FromArgb(52, 52, 50);
             textBox2.BorderStyle = BorderStyle.None;
-            textBox2.Font = new Font("Swis721 Blk BT", 15F);
+            textBox2.Font = new Font("Swis721 Blk BT", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox2.ForeColor = Color.White;
             textBox2.Location = new Point(508, 329);
             textBox2.Multiline = true;
@@ -87,7 +87,7 @@
             // 
             textBox3.BackColor = Color.FromArgb(52, 52, 50);
             textBox3.BorderStyle = BorderStyle.None;
-            textBox3.Font = new Font("Swis721 Blk BT", 15F);
+            textBox3.Font = new Font("Swis721 Blk BT", 15.75F);
             textBox3.ForeColor = Color.White;
             textBox3.Location = new Point(766, 329);
             textBox3.Multiline = true;
@@ -101,7 +101,7 @@
             // 
             textBox4.BackColor = Color.FromArgb(52, 52, 50);
             textBox4.BorderStyle = BorderStyle.None;
-            textBox4.Font = new Font("Swis721 Blk BT", 15F);
+            textBox4.Font = new Font("Swis721 Blk BT", 15.75F);
             textBox4.ForeColor = Color.White;
             textBox4.Location = new Point(508, 421);
             textBox4.Multiline = true;
@@ -116,7 +116,7 @@
             // 
             textBox5.BackColor = Color.FromArgb(52, 52, 50);
             textBox5.BorderStyle = BorderStyle.None;
-            textBox5.Font = new Font("Swis721 Blk BT", 15F);
+            textBox5.Font = new Font("Swis721 Blk BT", 15.75F);
             textBox5.ForeColor = Color.White;
             textBox5.Location = new Point(766, 421);
             textBox5.Multiline = true;

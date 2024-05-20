@@ -10,14 +10,17 @@ using System.Windows.Forms;
 
 namespace YazilimYapimi
 {
+   
     public partial class Form3 : Form
+    { 
+        private int loggedInUserId = 0;
+    public Form3(int userId)
     {
-        public Form3()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        loggedInUserId = userId;
+    }
 
-        private void button1_Click(object sender, EventArgs e)
+    private void button1_Click(object sender, EventArgs e)
         {
 
         }
@@ -36,7 +39,7 @@ namespace YazilimYapimi
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            Form7 form7 = new Form7();
+            Form7 form7 = new Form7(loggedInUserId);
             form7.Show();
             this.Hide();
         }
@@ -48,10 +51,10 @@ namespace YazilimYapimi
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Form6 form6 = new Form6();
-            form6.Show();
-            this.Hide();
-        }
+        Form6 form6 = new Form6(loggedInUserId);
+        form6.Show();
+        this.Hide();
+    }
 
         private void button6_Click(object sender, EventArgs e)
         {
@@ -61,3 +64,4 @@ namespace YazilimYapimi
         }
     }
 }
+

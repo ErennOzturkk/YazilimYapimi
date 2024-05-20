@@ -14,9 +14,12 @@ namespace YazilimYapimi
 {
     public partial class Form6 : Form
     {
-        public Form6()
+        private int loggedInUserId;
+
+        public Form6(int userId)
         {
             InitializeComponent();
+            loggedInUserId = userId;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -47,31 +50,55 @@ namespace YazilimYapimi
             {
                 con.Open();
 
-                string Query = "INSERT INTO Words (English, Turkish, Pathway, WordDate, Sentence) VALUES (@English, @Turkish, @Pathway, @WordDate,@Sentence)";
+                string insertWordQuery = @"
+                INSERT INTO Words (English, Turkish, Pathway, WordDate, Sentence, UserID) 
+                VALUES (@English, @Turkish, @Pathway, @WordDate, @Sentence, @UserID);
+                SELECT SCOPE_IDENTITY();";
 
-                using (SqlCommand cmd = new SqlCommand(Query, con))
+                using (SqlCommand cmd = new SqlCommand(insertWordQuery, con))
                 {
                     cmd.Parameters.AddWithValue("@English", English);
                     cmd.Parameters.AddWithValue("@Turkish", Turkish);
                     cmd.Parameters.AddWithValue("@Pathway", Pathway);
                     cmd.Parameters.AddWithValue("@WordDate", WordDate);
                     cmd.Parameters.AddWithValue("@Sentence", Sentence);
+                    cmd.Parameters.AddWithValue("@UserID", loggedInUserId); // Kullanıcının ID'sini ekle
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
+                    object result = cmd.ExecuteScalar();
+                    int newWordID = Convert.ToInt32(result);
 
-                    if (rowsAffected > 0)
+                    if (newWordID > 0)
                     {
-                        MessageBox.Show("Word added");
+                        string KnowingCounterQuery = @"
+                        INSERT INTO KnowingCounter (WordID, WordCounter) 
+                        VALUES (@WordID, 0)";
+
+                        using (SqlCommand knowingCounterCmd = new SqlCommand(KnowingCounterQuery, con))
+                        {
+                            knowingCounterCmd.Parameters.AddWithValue("@WordID", newWordID);
+
+                            int knowingCounterRowsAffected = knowingCounterCmd.ExecuteNonQuery();
+
+                            if (knowingCounterRowsAffected > 0)
+                            {
+                                MessageBox.Show("Word added and KnowingCounter initialized to 0.");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Word added but KnowingCounter initialization failed.");
+                            }
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("No word added");
+                        MessageBox.Show("No word added.");
                     }
                 }
             }
         }
+    
 
-        private void pictureBox6_Click(object sender, EventArgs e)
+    private void pictureBox6_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
         }
@@ -83,7 +110,7 @@ namespace YazilimYapimi
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Form3 form3 = new Form3(); 
+            Form3 form3 = new Form3(loggedInUserId); 
             form3.Show();
             this.Hide();
         }
