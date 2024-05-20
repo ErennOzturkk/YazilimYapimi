@@ -68,8 +68,8 @@
             // 
             textBox2.BackColor = Color.White;
             textBox2.Cursor = Cursors.IBeam;
-            textBox2.Font = new Font("Swis721 Blk BT", 21.75F);
-            textBox2.ForeColor = SystemColors.Menu;
+            textBox2.Font = new Font("Swis721 Blk BT", 15F);
+            textBox2.ForeColor = Color.Black;
             textBox2.Location = new Point(577, 303);
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
@@ -81,8 +81,8 @@
             // 
             textBox1.BackColor = Color.White;
             textBox1.Cursor = Cursors.IBeam;
-            textBox1.Font = new Font("Swis721 Blk BT", 21.75F);
-            textBox1.ForeColor = SystemColors.Menu;
+            textBox1.Font = new Font("Swis721 Blk BT", 15F);
+            textBox1.ForeColor = Color.Black;
             textBox1.Location = new Point(577, 265);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
@@ -126,8 +126,8 @@
             // 
             textBox3.BackColor = Color.White;
             textBox3.Cursor = Cursors.IBeam;
-            textBox3.Font = new Font("Swis721 Blk BT", 21.75F);
-            textBox3.ForeColor = SystemColors.Menu;
+            textBox3.Font = new Font("Swis721 Blk BT", 15F);
+            textBox3.ForeColor = Color.Black;
             textBox3.Location = new Point(577, 341);
             textBox3.Multiline = true;
             textBox3.Name = "textBox3";
@@ -190,6 +190,7 @@
             button3.Size = new Size(35, 28);
             button3.TabIndex = 18;
             button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
             // 
             // Form2
             // 

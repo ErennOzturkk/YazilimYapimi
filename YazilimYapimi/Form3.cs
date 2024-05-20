@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -29,7 +30,9 @@ namespace YazilimYapimi
 
         private void button5_Click(object sender, EventArgs e)
         {
-
+            Form8 form8 = new Form8(loggedInUserId);
+            form8.Show();
+            this.Hide();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -39,9 +42,42 @@ namespace YazilimYapimi
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            Form7 form7 = new Form7(loggedInUserId);
-            form7.Show();
-            this.Hide();
+            string connectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
+            string checkUserQuery = "SELECT LastQuizDate FROM QuizTimer WHERE UserID = @UserID";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(checkUserQuery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                        object result = cmd.ExecuteScalar();
+
+                        if (result == null || result == DBNull.Value)
+                        {
+                            string insertQuery = "INSERT INTO QuizTimer (UserID,LastQuizDate) VALUES (@UserID, GETDATE())";
+                            using (SqlCommand insertCmd = new SqlCommand(insertQuery, con))
+                            {
+                                insertCmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                                insertCmd.ExecuteNonQuery();
+                            }
+                            Form7 form7 = new Form7(loggedInUserId);
+                            form7.Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            MessageBox.Show("24 saat içinde quiz'e sadece bir kez girebilirsiniz.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
         }
 
         private void button3_Click_1(object sender, EventArgs e)

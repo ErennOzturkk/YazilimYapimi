@@ -175,6 +175,53 @@ namespace YazilimYapimi
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("WordCounter updated successfully.");
+
+                            string selectCounterQuery = "SELECT WordCounter FROM KnowingCounter WHERE WordID = (SELECT WordID FROM Words WHERE English = @English AND UserID = @UserID)";
+                            using (SqlCommand counterCmd = new SqlCommand(selectCounterQuery, con))
+                            {
+                                counterCmd.Parameters.AddWithValue("@English", correctEnglishWord);
+                                counterCmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                                int counter = (int)counterCmd.ExecuteScalar();
+
+                                if (counter >= 6)
+                                {
+                                    string insertKnownWordQuery = "INSERT INTO KnownWords (UserID, English) VALUES (@UserID, @English)";
+                                    using (SqlCommand insertCmd = new SqlCommand(insertKnownWordQuery, con))
+                                    {
+                                        insertCmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                                        insertCmd.Parameters.AddWithValue("@English", correctEnglishWord);
+                                        int insertedRows = insertCmd.ExecuteNonQuery();
+
+                                        if (insertedRows > 0)
+                                        {
+                                            MessageBox.Show("Kelime bilindiği için KnownWords tablosuna eklendi.");
+
+                                            DateTime nextQuestionDate = WordDate.AddDays(1);
+                                            string insertKnownWordYesterdayQuery = "INSERT INTO KnownWordsYesterday (UserID, English, NextQuestionDate) VALUES (@UserID, @English, @NextQuestionDate)";
+                                            using (SqlCommand insertYesterdayCmd = new SqlCommand(insertKnownWordYesterdayQuery, con))
+                                            {
+                                                insertYesterdayCmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                                                insertYesterdayCmd.Parameters.AddWithValue("@English", correctEnglishWord);
+                                                insertYesterdayCmd.Parameters.AddWithValue("@NextQuestionDate", nextQuestionDate);
+                                                int insertedYesterdayRows = insertYesterdayCmd.ExecuteNonQuery();
+
+                                                if (insertedYesterdayRows > 0)
+                                                {
+                                                    MessageBox.Show("Bilinen kelimenin sorulma tarihi belirlendi.");
+                                                }
+                                                else
+                                                {
+                                                    MessageBox.Show("Bilinen kelimenin sorulma tarihi belirlenirken bir hata oluştu.");
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Kelimenin KnownWords tablosuna eklenmesi sırasında bir hata oluştu.");
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else
                         {
@@ -185,8 +232,6 @@ namespace YazilimYapimi
                 else
                 {
                     MessageBox.Show("Yanlış cevap. Tekrar deneyin.");
-
-                    // WordCounter sıfırlama
                     string resetCounterQuery = "UPDATE KnowingCounter SET WordCounter = 0 WHERE WordID = (SELECT WordID FROM Words WHERE English = @English AND UserID = @UserID)";
 
                     using (SqlCommand cmd = new SqlCommand(resetCounterQuery, con))
@@ -210,4 +255,3 @@ namespace YazilimYapimi
         }
     }
 }
-

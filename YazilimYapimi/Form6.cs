@@ -62,7 +62,7 @@ namespace YazilimYapimi
                     cmd.Parameters.AddWithValue("@Pathway", Pathway);
                     cmd.Parameters.AddWithValue("@WordDate", WordDate);
                     cmd.Parameters.AddWithValue("@Sentence", Sentence);
-                    cmd.Parameters.AddWithValue("@UserID", loggedInUserId); // Kullanıcının ID'sini ekle
+                    cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
 
                     object result = cmd.ExecuteScalar();
                     int newWordID = Convert.ToInt32(result);
