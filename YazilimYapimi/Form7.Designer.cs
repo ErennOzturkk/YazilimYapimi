@@ -43,7 +43,9 @@ namespace YazilimYapimi
             radioButton4 = new RadioButton();
             button2 = new Button();
             button3 = new Button();
+            pictureBox2 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -215,11 +217,20 @@ namespace YazilimYapimi
             button3.UseVisualStyleBackColor = false;
             button3.Click += button3_Click;
             // 
+            // pictureBox2
+            // 
+            pictureBox2.Location = new Point(912, 134);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(100, 93);
+            pictureBox2.TabIndex = 15;
+            pictureBox2.TabStop = false;
+            // 
             // Form7
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1440, 810);
+            Controls.Add(pictureBox2);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(radioButton4);
@@ -238,6 +249,7 @@ namespace YazilimYapimi
             Text = "Form7";
             Load += Form7_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -272,5 +284,6 @@ namespace YazilimYapimi
         private RadioButton radioButton4;
         private Button button2;
         private Button button3;
+        private PictureBox pictureBox2;
     }
 }
