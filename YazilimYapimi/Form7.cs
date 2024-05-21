@@ -40,7 +40,7 @@ namespace YazilimYapimi
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message);
-      
+
                 }
             }
         }
@@ -53,20 +53,39 @@ namespace YazilimYapimi
 
         private void NewQuestion()
         {
-            if (askedQuestions.Count >= numQuestion)
+            // Tüm kelimelerin LevelofQuestion değeri 0 ise, numQuestion sayıda soru sorulacak
+            if (CheckAllLevelsZero())
             {
-                MessageBox.Show("Soru sayısı sınırına ulaşıldı. Form kapatılıyor.");
-                this.Close();
-                return;
+                // Soru sayısı sınırına ulaşıldıysa, form kapatılacak
+                if (askedQuestions.Count >= numQuestion)
+                {
+                    MessageBox.Show("Soru sayısı sınırına ulaşıldı. Form kapatılıyor.");
+                    this.Close();
+                    return;
+                }
             }
+            else
+            {
+
+                AskPastDueWords();
+
+
+                if (askedQuestions.Count < numQuestion) // zaten yeterince soru varsa sorma
+                {
+                    AskAdditionalQuestions(numQuestion - askedQuestions.Count); // kalan soru sayısı
+                }
+            }
+
+            // Soruyu sormadan önce, askedQuestions listesini temizleyin
             askedQuestions.Clear();
+
             string query1 = @"
-                SELECT TOP 1 Turkish, English 
-                FROM Words 
-                WHERE UserID = @UserID 
-                AND LevelofQuestion < 6
-                AND (WordDate IS NULL OR WordDate <= GETDATE())
-                AND Turkish NOT IN (SELECT Turkish FROM AskedQuestions)";
+        SELECT TOP 1 Turkish, English 
+        FROM Words 
+        WHERE UserID = @UserID 
+        AND LevelofQuestion < 6
+        AND (WordDate IS NULL OR WordDate <= GETDATE())
+        AND Turkish NOT IN (SELECT Turkish FROM AskedQuestions)";
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -97,11 +116,11 @@ namespace YazilimYapimi
                     }
 
                     string query2 = @"
-                        SELECT TOP 3 English 
-                        FROM Words 
-                        WHERE Turkish != @Turkish 
-                        AND UserID = @UserID 
-                        ORDER BY NEWID()";
+                SELECT TOP 3 English 
+                FROM Words 
+                WHERE Turkish != @Turkish 
+                AND UserID = @UserID 
+                ORDER BY NEWID()";
 
                     List<string> englishWords = new List<string>();
 
@@ -126,12 +145,12 @@ namespace YazilimYapimi
                     radioButton1.Tag = (englishWords[0] == correctEnglishWord);
                     radioButton2.Text = englishWords[1];
                     radioButton2.Tag = (englishWords[1] == correctEnglishWord);
+
                     radioButton3.Text = englishWords[2];
                     radioButton3.Tag = (englishWords[2] == correctEnglishWord);
                     radioButton4.Text = englishWords[3];
                     radioButton4.Tag = (englishWords[3] == correctEnglishWord);
                     askedQuestions.Add(turkishWord);
-
                     using (SqlCommand cmd = new SqlCommand("INSERT INTO AskedQuestions (Turkish) VALUES (@Turkish)", con))
                     {
                         cmd.Parameters.AddWithValue("@Turkish", turkishWord);
@@ -266,26 +285,137 @@ namespace YazilimYapimi
                 }
             }
         }
+        private bool CheckAllLevelsZero()
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
 
+                    string query = "SELECT COUNT(*) FROM Words WHERE UserID = @UserID AND LevelofQuestion > 0";
 
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                        int count = (int)cmd.ExecuteScalar();
+
+                        return count == 0; // Eğer count 0 ise tüm kelimelerin levelı 0
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                    return false; // Hatalı durum
+                }
+            }
+        }
+        private void AskPastDueWords()
+        {
+            string query = @"
+        SELECT TOP 1 Turkish, English 
+        FROM Words 
+        WHERE UserID = @UserID 
+        AND LevelofQuestion > 0
+        AND (WordDate IS NOT NULL AND WordDate <= GETDATE())
+        AND Turkish NOT IN (SELECT Turkish FROM AskedQuestions)
+        ORDER BY WordDate ASC";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string turkishWord = reader["Turkish"].ToString();
+                                correctEnglishWord = reader["English"].ToString();
+                                textBox1.Text = $"{turkishWord} kelimesinin anlamı nedir?";
+                                askedQuestions.Add(turkishWord);
+                                using (SqlCommand insertCmd = new SqlCommand("INSERT INTO AskedQuestions (Turkish) VALUES (@Turkish)", con))
+                                {
+                                    insertCmd.Parameters.AddWithValue("@Turkish", turkishWord);
+                                    insertCmd.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+        }
+        private void AskAdditionalQuestions(int remainingQuestions)
+        {
+            for (int i = 0; i < remainingQuestions; i++)
+            {
+                string query = @"
+            SELECT TOP 1 Turkish, English 
+            FROM Words 
+            WHERE UserID = @UserID 
+            AND Turkish NOT IN (SELECT Turkish FROM AskedQuestions)
+            ORDER BY NEWID()";
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        con.Open();
+
+                        using (SqlCommand cmd = new SqlCommand(query, con))
+                        {
+                            cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    string turkishWord = reader["Turkish"].ToString();
+                                    correctEnglishWord = reader["English"].ToString();
+                                    textBox1.Text = $"{turkishWord} kelimesinin anlamı nedir?";
+
+                                    // Soruyu askedQuestions listesine ekle
+                                    askedQuestions.Add(turkishWord);
+
+                                    // ... (Seçenekleri oluşturmak için kodlar) ... 
+
+                                    // AskedQuestions tablosuna ekle (burada eklenebilir)
+                                    using (SqlCommand insertCmd = new SqlCommand("INSERT INTO AskedQuestions (Turkish) VALUES (@Turkish)", con))
+                                    {
+                                        insertCmd.Parameters.AddWithValue("@Turkish", turkishWord);
+                                        insertCmd.ExecuteNonQuery();
+                                    }
+                                }
+                                else
+                                {
+                                    // Sorulacak kelime bulunamadı
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                }
+            }
+        }
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void label1_Click(object sender, EventArgs e)
         {
         }
     }
 }
+      
