@@ -57,13 +57,13 @@ namespace YazilimYapimi
 
                         if (result == null || result == DBNull.Value)
                         {
-                     
                             string insertQuery = "INSERT INTO QuizTimer (UserID, LastQuizDate) VALUES (@UserID, GETDATE())";
                             using (SqlCommand insertCmd = new SqlCommand(insertQuery, con))
                             {
                                 insertCmd.Parameters.AddWithValue("@UserID", loggedInUserId);
                                 insertCmd.ExecuteNonQuery();
                             }
+
                             Form9 form9 = new Form9(loggedInUserId);
                             form9.Show();
                             this.Hide();
@@ -75,20 +75,19 @@ namespace YazilimYapimi
 
                             if ((currentTime - lastQuizDate).TotalHours >= 24)
                             {
-                             
                                 string updateQuery = "UPDATE QuizTimer SET LastQuizDate = GETDATE() WHERE UserID = @UserID";
                                 using (SqlCommand updateCmd = new SqlCommand(updateQuery, con))
                                 {
                                     updateCmd.Parameters.AddWithValue("@UserID", loggedInUserId);
                                     updateCmd.ExecuteNonQuery();
                                 }
+
                                 Form9 form9 = new Form9(loggedInUserId);
                                 form9.Show();
                                 this.Hide();
                             }
                             else
                             {
-                            
                                 MessageBox.Show("24 saat içinde quiz'e sadece bir kez girebilirsiniz.");
                             }
                         }
