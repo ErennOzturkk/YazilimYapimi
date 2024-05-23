@@ -64,8 +64,8 @@ namespace YazilimYapimi
                                 insertCmd.Parameters.AddWithValue("@UserID", loggedInUserId);
                                 insertCmd.ExecuteNonQuery();
                             }
-                            Form7 form7 = new Form7(loggedInUserId);
-                            form7.Show();
+                            Form9 form9 = new Form9(loggedInUserId);
+                            form9.Show();
                             this.Hide();
                         }
                         else
@@ -82,8 +82,8 @@ namespace YazilimYapimi
                                     updateCmd.Parameters.AddWithValue("@UserID", loggedInUserId);
                                     updateCmd.ExecuteNonQuery();
                                 }
-                                Form7 form7 = new Form7(loggedInUserId);
-                                form7.Show();
+                                Form9 form9 = new Form9(loggedInUserId);
+                                form9.Show();
                                 this.Hide();
                             }
                             else
