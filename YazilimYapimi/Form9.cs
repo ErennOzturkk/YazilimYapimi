@@ -26,13 +26,18 @@ namespace YazilimYapimi
 
         private void Form9_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             string resimYolu = @"C:\Users\EREN\Downloads\indir.jpg";
             pictureBox2.Image = Image.FromFile(resimYolu);
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
