@@ -33,6 +33,7 @@
             dataGridView1 = new DataGridView();
             button6 = new Button();
             button3 = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
@@ -66,6 +67,7 @@
             button6.Size = new Size(35, 28);
             button6.TabIndex = 17;
             button6.UseVisualStyleBackColor = false;
+            button6.Click += button6_Click;
             // 
             // button3
             // 
@@ -79,12 +81,28 @@
             button3.Size = new Size(35, 28);
             button3.TabIndex = 18;
             button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.FromArgb(75, 201, 249);
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Swis721 Blk BT", 15F);
+            button1.ForeColor = Color.Black;
+            button1.Location = new Point(570, 569);
+            button1.Name = "button1";
+            button1.Size = new Size(286, 32);
+            button1.TabIndex = 19;
+            button1.Text = "Print";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // Form7
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1440, 810);
+            Controls.Add(button1);
             Controls.Add(button3);
             Controls.Add(button6);
             Controls.Add(dataGridView1);
@@ -103,5 +121,6 @@
         private DataGridView dataGridView1;
         private Button button6;
         private Button button3;
+        private Button button1;
     }
 }

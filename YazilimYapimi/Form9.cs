@@ -219,13 +219,13 @@ namespace YazilimYapimi
                 isCorrect = true;
             }
 
-            if (isCorrect)
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                MessageBox.Show("Doğru cevap!");
+                con.Open();
 
-                using (SqlConnection con = new SqlConnection(connectionString))
+                if (isCorrect)
                 {
-                    con.Open();
+                    MessageBox.Show("Doğru cevap!");
 
                     string updateWordDateQuery = @"
 UPDATE Words 
@@ -249,7 +249,7 @@ AND UserID = @UserID;";
                     }
 
                     int level = currentWord.LevelofQuestion + 1;
-                    if (level == 8) // 
+                    if (level == 8)
                     {
                         string insertKnownWordQuery = "INSERT INTO KnownWords (UserID, English) VALUES (@UserID, @English)";
                         using (SqlCommand insertCmd = new SqlCommand(insertKnownWordQuery, con))
@@ -268,10 +268,29 @@ AND UserID = @UserID;";
                         }
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Yanlış cevap!");
+
+                    string resetWordLevelQuery = @"
+UPDATE Words 
+SET LevelofQuestion = 1, 
+    WordDate = GETDATE()
+WHERE English = @English 
+AND UserID = @UserID;";
+
+                    using (SqlCommand cmd = new SqlCommand(resetWordLevelQuery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@English", currentWord.English);
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
             }
 
             NewQuestion();
         }
+
 
         private void button2_Click(object sender, EventArgs e)
         {

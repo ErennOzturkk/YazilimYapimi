@@ -14,9 +14,17 @@ namespace YazilimYapimi
 {
     public partial class Form6 : Form
     {
+        private int loggedInUserId;
+
         public Form6()
         {
             InitializeComponent();
+        }
+
+        public Form6(int loggedInUserId)
+        {
+            InitializeComponent();
+            this.loggedInUserId = loggedInUserId;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -38,31 +46,57 @@ namespace YazilimYapimi
         {
             string Turkish = textBox1.Text;
             string English = textBox2.Text;
+            string Pathway = textBox3.Text;
+            string Sentence = textBox4.Text;
+            DateTime date = DateTime.Now;
             string ConnectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
 
-            using (SqlConnection con = new SqlConnection(ConnectionString))
+            try
             {
-                con.Open();
-
-                string Query = "INSERT INTO Words (English, Turkish, Pathway) VALUES (@English, @Turkish, 0)";
-
-                using (SqlCommand cmd = new SqlCommand(Query, con))
+                using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
-                    cmd.Parameters.AddWithValue("@English", English);
-                    cmd.Parameters.AddWithValue("@Turkish", Turkish);
+                    con.Open();
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
+                    string Query = "INSERT INTO Words (UserID, English, Turkish, Pathway, Sentence, WordDate) VALUES (@loggedInUserId, @English, @Turkish, @Pathway, @Sentence, @date)";
 
-                    if (rowsAffected > 0)
+                    using (SqlCommand cmd = new SqlCommand(Query, con))
                     {
-                        MessageBox.Show("Word updated");
-                    }
-                    else
-                    {
-                        MessageBox.Show("No word ");
+                        cmd.Parameters.AddWithValue("@loggedInUserId", loggedInUserId);
+                        cmd.Parameters.AddWithValue("@English", English);
+                        cmd.Parameters.AddWithValue("@Turkish", Turkish);
+                        cmd.Parameters.AddWithValue("@Pathway", Pathway);
+                        cmd.Parameters.AddWithValue("@Sentence", Sentence);
+                        cmd.Parameters.AddWithValue("@date", date);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Word inserted");
+                        }
+                        else
+                        {
+                            MessageBox.Show("No word inserted");
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form3 form3 = new Form3(loggedInUserId);
+            form3.Show();
+            this.Hide();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
