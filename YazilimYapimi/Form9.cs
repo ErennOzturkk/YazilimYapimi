@@ -9,6 +9,7 @@ namespace YazilimYapimi
     public partial class Form9 : Form
     {
         private List<WordData> wordList = new List<WordData>();
+        private List<WordData> askedWords = new List<WordData>(); // Sorulan kelimeleri tutmak için yeni bir liste
         private int loggedInUserId = 0;
         private int numQuestion = 0;
         private string connectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
@@ -49,25 +50,28 @@ namespace YazilimYapimi
         private void Form9_Load(object sender, EventArgs e)
         {
             ClearAskedQuestionsTable();
+            LoadWords();
             NewQuestion();
         }
 
         private void LoadWords()
         {
+            wordList.Clear();
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
                     con.Open();
 
-                    // İlk olarak, LevelofQuestion > 0 olan kelimeleri al
+                    // 1. TARİHİ GELMİŞ Level 1'den büyük TÜM kelimeleri ekle 
                     string query = @"
-                SELECT Turkish, English, Pathway, LevelofQuestion, WordDate 
-                FROM Words 
-                WHERE UserID = @UserID 
-                AND LevelofQuestion > 0 
-                AND (WordDate IS NOT NULL AND WordDate <= GETDATE()) 
-                ORDER BY WordDate ASC";
+            SELECT Turkish, English, Pathway, LevelofQuestion, WordDate 
+            FROM Words 
+            WHERE UserID = @UserID 
+            AND LevelofQuestion > 1
+            AND WordDate <= GETDATE()  -- Sadece tarihi gelmiş olanlar!
+            ORDER BY WordDate ASC";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
@@ -75,14 +79,13 @@ namespace YazilimYapimi
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            while (reader.Read() && wordList.Count < numQuestion)
+                            while (reader.Read())
                             {
                                 WordData word = new WordData
                                 {
                                     Turkish = reader["Turkish"].ToString(),
                                     English = reader["English"].ToString(),
                                     Pathway = reader["Pathway"].ToString(),
-                                    // LevelofQuestion'ı 1'den başlatan atama:
                                     LevelofQuestion = (int)reader["LevelofQuestion"],
                                     WordDate = reader.IsDBNull(reader.GetOrdinal("WordDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("WordDate"))
                                 };
@@ -91,38 +94,37 @@ namespace YazilimYapimi
                         }
                     }
 
-                    // Eğer wordList'in kapasitesi numQuestion'dan düşükse, LevelofQuestion = 1 olan kelimeleri ekle
-                    if (wordList.Count < numQuestion)
+                    // 2. numQuestion kadar Level 1 kelime ekle (önceki adımdan bağımsız)
+                    query = @"
+            SELECT TOP (@NumQuestion) Turkish, English, Pathway, LevelofQuestion, WordDate 
+            FROM Words 
+            WHERE UserID = @UserID 
+            AND LevelofQuestion = 1
+            ORDER BY NEWID()";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        query = @"
-                    SELECT Turkish, English, Pathway, LevelofQuestion, WordDate 
-                    FROM Words 
-                    WHERE UserID = @UserID 
-                    AND LevelofQuestion = 1
-                    ORDER BY NEWID()";
+                        cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                        cmd.Parameters.AddWithValue("@NumQuestion", numQuestion);
 
-                        using (SqlCommand cmd = new SqlCommand(query, con))
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
-
-                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            while (reader.Read())
                             {
-                                while (reader.Read() && wordList.Count < numQuestion)
+                                WordData word = new WordData
                                 {
-                                    WordData word = new WordData
-                                    {
-                                        Turkish = reader["Turkish"].ToString(),
-                                        English = reader["English"].ToString(),
-                                        Pathway = reader["Pathway"].ToString(),
-                                        // LevelofQuestion'ı 1'den başlatan atama:
-                                        LevelofQuestion = (int)reader["LevelofQuestion"],
-                                        WordDate = reader.IsDBNull(reader.GetOrdinal("WordDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("WordDate"))
-                                    };
-                                    wordList.Add(word);
-                                }
+                                    Turkish = reader["Turkish"].ToString(),
+                                    English = reader["English"].ToString(),
+                                    Pathway = reader["Pathway"].ToString(),
+                                    LevelofQuestion = (int)reader["LevelofQuestion"],
+                                    WordDate = reader.IsDBNull(reader.GetOrdinal("WordDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("WordDate"))
+                                };
+                                wordList.Add(word);
                             }
                         }
                     }
+
+                    // ... (Eski kod: Hata mesajı)
                 }
                 catch (Exception ex)
                 {
@@ -141,31 +143,44 @@ namespace YazilimYapimi
                 return;
             }
 
+            // Rastgele bir indeks seçin
             int randomIndex = rnd.Next(wordList.Count);
-            currentWord = wordList[randomIndex]; // Burada hata oluşuyor olabilir
+            currentWord = wordList[randomIndex];
+            askedWords.Add(currentWord);
+            wordList.RemoveAt(randomIndex);
 
             textBox1.Text = $"{currentWord.Turkish} kelimesinin anlamı nedir?";
             LoadImage(currentWord.Pathway);
 
-            // Kelimelerin tekil olduğu ve aynı kelimeyi tekrar sorgulamadığınızdan emin olmak için bir HashSet kullanın
+            // Şıklar için tüm kelimeleri kullanın
             HashSet<string> englishWords = new HashSet<string> { currentWord.English };
+            List<string> allEnglishWords = new List<string>();
 
-            // Şıklarda tekrar olmaması için 3 farklı kelime ekleyin
-            while (englishWords.Count < 4)
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                int randomIndex2 = rnd.Next(wordList.Count);
-                // Eğer kelime zaten `englishWords`'de değilse ekleyin
-                if (!englishWords.Contains(wordList[randomIndex2].English))
+                con.Open();
+                string query = "SELECT English FROM Words WHERE UserID = @UserID";
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    englishWords.Add(wordList[randomIndex2].English);
+                    cmd.Parameters.AddWithValue("@UserID", loggedInUserId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            allEnglishWords.Add(reader["English"].ToString());
+                        }
+                    }
                 }
             }
 
-            // `englishWords` şimdi 4 farklı kelime içeriyor
+            while (englishWords.Count < 4)
+            {
+                int randomIndex2 = rnd.Next(allEnglishWords.Count);
+                englishWords.Add(allEnglishWords[randomIndex2]);
+            }
 
-            // Şıkları karıştırın
+            // Şıkları karıştırın ve radio button'lara atayın
             List<string> shuffledEnglishWords = ShuffleList(englishWords.ToList());
-
             radioButton1.Text = shuffledEnglishWords[0];
             radioButton1.Tag = (shuffledEnglishWords[0] == currentWord.English);
             radioButton2.Text = shuffledEnglishWords[1];
@@ -174,9 +189,6 @@ namespace YazilimYapimi
             radioButton3.Tag = (shuffledEnglishWords[2] == currentWord.English);
             radioButton4.Text = shuffledEnglishWords[3];
             radioButton4.Tag = (shuffledEnglishWords[3] == currentWord.English);
-
-            // Soru sorulduktan sonra kelimeyi listeden kaldır
-            wordList.RemoveAt(randomIndex);
         }
 
         private void LoadImage(string pathway)
@@ -241,7 +253,7 @@ AND UserID = @UserID;";
                     }
 
                     int level = currentWord.LevelofQuestion + 1;
-                    if (level == 7) // LevelofQuestion 7'den sonra kelime bilinmiş sayılıyor
+                    if (level == 8) // 
                     {
                         string insertKnownWordQuery = "INSERT INTO KnownWords (UserID, English) VALUES (@UserID, @English)";
                         using (SqlCommand insertCmd = new SqlCommand(insertKnownWordQuery, con))
@@ -261,7 +273,8 @@ AND UserID = @UserID;";
                     }
                 }
             }
-            NewQuestion();
+
+            NewQuestion(); // Yeni bir soru sor
         }
 
         private void button2_Click(object sender, EventArgs e)
