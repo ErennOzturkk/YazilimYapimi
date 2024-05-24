@@ -9,7 +9,7 @@ namespace YazilimYapimi
     public partial class Form9 : Form
     {
         private List<WordData> wordList = new List<WordData>();
-        private List<WordData> askedWords = new List<WordData>(); // Sorulan kelimeleri tutmak için yeni bir liste
+        private List<WordData> askedWords = new List<WordData>();
         private int loggedInUserId = 0;
         private int numQuestion = 0;
         private string connectionString = "Data Source=DESKTOP-SI71SRK;Initial Catalog=YazilimYapimi;Integrated Security=True;Trust Server Certificate=True";
@@ -64,7 +64,6 @@ namespace YazilimYapimi
                 {
                     con.Open();
 
-                    // 1. TARİHİ GELMİŞ Level 1'den büyük TÜM kelimeleri ekle 
                     string query = @"
             SELECT Turkish, English, Pathway, LevelofQuestion, WordDate 
             FROM Words 
@@ -93,8 +92,6 @@ namespace YazilimYapimi
                             }
                         }
                     }
-
-                    // 2. numQuestion kadar Level 1 kelime ekle (önceki adımdan bağımsız)
                     query = @"
             SELECT TOP (@NumQuestion) Turkish, English, Pathway, LevelofQuestion, WordDate 
             FROM Words 
@@ -124,7 +121,7 @@ namespace YazilimYapimi
                         }
                     }
 
-                    // ... (Eski kod: Hata mesajı)
+
                 }
                 catch (Exception ex)
                 {
@@ -135,7 +132,6 @@ namespace YazilimYapimi
 
         private void NewQuestion()
         {
-            // Eğer kelime listesi boş ise, soruları durdur
             if (wordList.Count == 0)
             {
                 MessageBox.Show("Tüm sorular tamamlandı. Form kapatılıyor.");
@@ -152,7 +148,7 @@ namespace YazilimYapimi
             textBox1.Text = $"{currentWord.Turkish} kelimesinin anlamı nedir?";
             LoadImage(currentWord.Pathway);
 
-            // Şıklar için tüm kelimeleri kullanın
+
             HashSet<string> englishWords = new HashSet<string> { currentWord.English };
             List<string> allEnglishWords = new List<string>();
 
@@ -179,7 +175,7 @@ namespace YazilimYapimi
                 englishWords.Add(allEnglishWords[randomIndex2]);
             }
 
-            // Şıkları karıştırın ve radio button'lara atayın
+
             List<string> shuffledEnglishWords = ShuffleList(englishWords.ToList());
             radioButton1.Text = shuffledEnglishWords[0];
             radioButton1.Tag = (shuffledEnglishWords[0] == currentWord.English);
@@ -274,7 +270,7 @@ AND UserID = @UserID;";
                 }
             }
 
-            NewQuestion(); // Yeni bir soru sor
+            NewQuestion();
         }
 
         private void button2_Click(object sender, EventArgs e)
