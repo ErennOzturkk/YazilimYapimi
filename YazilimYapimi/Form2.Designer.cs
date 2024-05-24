@@ -38,6 +38,8 @@
             textBox3 = new TextBox();
             pictureBox5 = new PictureBox();
             button1 = new Button();
+            button2 = new Button();
+            button3 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
@@ -66,9 +68,9 @@
             // 
             textBox2.BackColor = Color.White;
             textBox2.Cursor = Cursors.IBeam;
-            textBox2.Font = new Font("Swis721 Blk BT", 21.75F);
-            textBox2.ForeColor = SystemColors.Menu;
-            textBox2.Location = new Point(577, 289);
+            textBox2.Font = new Font("Swis721 Blk BT", 15F);
+            textBox2.ForeColor = Color.Black;
+            textBox2.Location = new Point(577, 303);
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(286, 32);
@@ -79,9 +81,9 @@
             // 
             textBox1.BackColor = Color.White;
             textBox1.Cursor = Cursors.IBeam;
-            textBox1.Font = new Font("Swis721 Blk BT", 21.75F);
-            textBox1.ForeColor = SystemColors.Menu;
-            textBox1.Location = new Point(577, 237);
+            textBox1.Font = new Font("Swis721 Blk BT", 15F);
+            textBox1.ForeColor = Color.Black;
+            textBox1.Location = new Point(577, 265);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(286, 32);
@@ -95,7 +97,7 @@
             pictureBox4.BorderStyle = BorderStyle.FixedSingle;
             pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
             pictureBox4.InitialImage = null;
-            pictureBox4.Location = new Point(533, 289);
+            pictureBox4.Location = new Point(533, 303);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(38, 32);
             pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
@@ -112,7 +114,7 @@
             pictureBox3.ErrorImage = null;
             pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
             pictureBox3.InitialImage = (Image)resources.GetObject("pictureBox3.InitialImage");
-            pictureBox3.Location = new Point(533, 237);
+            pictureBox3.Location = new Point(533, 265);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(38, 32);
             pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
@@ -124,8 +126,8 @@
             // 
             textBox3.BackColor = Color.White;
             textBox3.Cursor = Cursors.IBeam;
-            textBox3.Font = new Font("Swis721 Blk BT", 21.75F);
-            textBox3.ForeColor = SystemColors.Menu;
+            textBox3.Font = new Font("Swis721 Blk BT", 15F);
+            textBox3.ForeColor = Color.Black;
             textBox3.Location = new Point(577, 341);
             textBox3.Multiline = true;
             textBox3.Name = "textBox3";
@@ -162,11 +164,41 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
+            // button2
+            // 
+            button2.BackColor = Color.FromArgb(75, 201, 249);
+            button2.BackgroundImage = (Image)resources.GetObject("button2.BackgroundImage");
+            button2.BackgroundImageLayout = ImageLayout.Zoom;
+            button2.FlatAppearance.BorderSize = 0;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Location = new Point(1336, 12);
+            button2.Name = "button2";
+            button2.Size = new Size(35, 28);
+            button2.TabIndex = 17;
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
+            // button3
+            // 
+            button3.BackColor = Color.FromArgb(75, 201, 249);
+            button3.BackgroundImage = (Image)resources.GetObject("button3.BackgroundImage");
+            button3.BackgroundImageLayout = ImageLayout.Zoom;
+            button3.FlatAppearance.BorderSize = 0;
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Location = new Point(1377, 12);
+            button3.Name = "button3";
+            button3.Size = new Size(35, 28);
+            button3.TabIndex = 18;
+            button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1424, 771);
+            Controls.Add(button3);
+            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(textBox3);
             Controls.Add(pictureBox5);
@@ -200,5 +232,7 @@
         private TextBox textBox3;
         private PictureBox pictureBox5;
         private Button button1;
+        private Button button2;
+        private Button button3;
     }
 }

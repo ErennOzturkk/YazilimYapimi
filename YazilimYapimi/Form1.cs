@@ -24,7 +24,7 @@ namespace YazilimYapimi
         {
 
         }
-
+        private int loggedInUserId=0;
         private void button1_Click(object sender, EventArgs e)
         {
             string Mail = textBox1.Text;
@@ -35,27 +35,26 @@ namespace YazilimYapimi
 
             con.Open();
 
-            string Query = "SELECT COUNT(*) FROM UserInterface WHERE Mail = @Mail AND Password = @Password";
+            string Query = "SELECT UserID FROM UserInterface WHERE (Mail = @Mail OR Username = @Mail) AND Password = @Password";
             SqlCommand cmd = new SqlCommand(Query, con);
             cmd.Parameters.AddWithValue("@Mail", Mail);
             cmd.Parameters.AddWithValue("@Password", Password);
 
-            int userCount = (int)cmd.ExecuteScalar();
-
+            object result = cmd.ExecuteScalar();
             con.Close();
 
-            if (userCount > 0)
+            if (result != null)
             {
+                int userId = (int)result;
                 MessageBox.Show("Giriþ baþarýlý!");
-                this.Hide();
-                Form3 form3 = new Form3();
+                Form3 form3 = new Form3(userId);
                 form3.Show();
+                this.Hide();
             }
             else
             {
                 MessageBox.Show("Giriþ baþarýsýz. Lütfen mail ve þifrenizi kontrol edin.");
             }
-
         }
 
         private void button2_Click(object sender, EventArgs e)

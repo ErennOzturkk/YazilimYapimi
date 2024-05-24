@@ -36,6 +36,7 @@
             button4 = new Button();
             button5 = new Button();
             button3 = new Button();
+            button6 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
@@ -83,6 +84,7 @@
             button2.TabIndex = 9;
             button2.Text = "Sonuçlarım";
             button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
             // 
             // button4
             // 
@@ -126,11 +128,26 @@
             button3.UseVisualStyleBackColor = false;
             button3.Click += button3_Click_1;
             // 
+            // button6
+            // 
+            button6.BackColor = Color.FromArgb(75, 201, 249);
+            button6.BackgroundImage = (Image)resources.GetObject("button6.BackgroundImage");
+            button6.BackgroundImageLayout = ImageLayout.Zoom;
+            button6.FlatAppearance.BorderSize = 0;
+            button6.FlatStyle = FlatStyle.Flat;
+            button6.Location = new Point(1352, 12);
+            button6.Name = "button6";
+            button6.Size = new Size(35, 28);
+            button6.TabIndex = 15;
+            button6.UseVisualStyleBackColor = false;
+            button6.Click += button6_Click;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1440, 810);
+            Controls.Add(button6);
             Controls.Add(button3);
             Controls.Add(button5);
             Controls.Add(button4);
@@ -156,5 +173,6 @@
         private Button button4;
         private Button button5;
         private PictureBox pictureBox3;
+        private Button button6;
     }
 }

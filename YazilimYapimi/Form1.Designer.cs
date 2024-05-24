@@ -100,7 +100,7 @@
             // 
             textBox2.BackColor = Color.White;
             textBox2.Cursor = Cursors.IBeam;
-            textBox2.Font = new Font("Swis721 Blk BT", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox2.Font = new Font("Swis721 Blk BT", 15F);
             textBox2.ForeColor = Color.Black;
             textBox2.Location = new Point(583, 314);
             textBox2.Multiline = true;
@@ -143,7 +143,7 @@
             // 
             textBox1.BackColor = Color.White;
             textBox1.Cursor = Cursors.IBeam;
-            textBox1.Font = new Font("Swis721 Blk BT", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox1.Font = new Font("Swis721 Blk BT", 15F);
             textBox1.ForeColor = Color.Black;
             textBox1.Location = new Point(584, 250);
             textBox1.Multiline = true;
