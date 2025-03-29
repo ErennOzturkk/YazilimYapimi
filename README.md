@@ -12,6 +12,7 @@ Hikayeler (Stories)
 3. Story: Sınav Modülü
 4. Story: Kullanıcı Ayarları
 5. Story: Analiz Raporları
+
 Scrum Süreci
 Sonuç
 <a name="projenin-amaci"></a>
